@@ -3,12 +3,13 @@
 
 # Change log
 
-|  **Version**  |  **Date**  |  **Changes**  |
-| --- | --- | --- |
-|  1.0.0  |  2023/02/03  |  Basic scan result callback and settings.  |
-|  1.0.3  |  2023/02/12  |  Add API.  |
-|  1.0.4  |  2023/02/27  |  Add suspend and resume API.  |
-|  1.0.6  |  2023/03/09  |  Add version info, loopscan, multibarcodes and precise scan about API.  |
+| **Version** | **Date**   | **Changes**                                                          |
+|-------|------------|----------------------------------------------------------------------|
+| 1.0.0 | 2023/02/03 | Basic scan result callback and settings.                             |
+| 1.0.3 | 2023/02/12 | Add API.                                                             |
+| 1.0.4 | 2023/02/27 | Add suspend and resume API.                                          |
+| 1.0.6 | 2023/03/09 | Add version info, loopscan, multibarcodes and precise scan about API. |
+| 1.0.7 | 2023/03/10 | Add API to support config aimer and illume light work mode.          |
 
 # Config Maven
 
@@ -270,6 +271,61 @@ Sample code:
 ```java
     XcBarcodeScanner.setTimeout(5); // Set scan time limit to 5 seconds.
 ```
+
+
+## Config aimer light
+
+Use the following API to config aimer light work mode.
+
+```java
+    void setAimerLightsMode(int aimMode);
+```
+
+Aimer light work mode defined in the class *AimerMode* :
+
+```java
+public class AimerMode {
+    public static int ALWAYS_OFF; // Always Off.
+    public static int TRIGGER_ON; // TurnOn while scanning.
+    public static int ALWAYS_ON; // Always On.
+}
+```
+
+Sample code:
+
+```java
+    XcBarcodeScanner.setAimerLightsMode(AimerMode.TRIGGER_ON); // Set aimer mode to: Turn on while scanning.
+    XcBarcodeScanner.setAimerLightsMode(AimerMode.ALWAYS_OFF); // Set aimer mode to: always off.
+```
+
+**Note:** For laser aimer, DO NOT USE THE *ALWAYS_ON* mode.
+
+## Config illume light
+
+Use the following API to config illume light work mode.
+
+```java
+    void setFlashLightsMode(int flashMode);
+```
+
+The work mode of illume light defined in class *FlashMode* :
+
+```java
+public class FlashMode {
+    public static int OFF;           // Always off.
+    public static int ILLUME_ONLY;   // Only illume.
+    public static int ILLUME_STROBE; // Illume and Strobe.
+}
+```
+
+Sample code:
+
+```java
+    XcBarcodeScanner.setFlashLightsMode(FlashMode.ILLUME_STROBE); // Set illume to: illume and strobe
+    XcBarcodeScanner.setFlashLightsMode(FlashMode.ILLUME_ONLY);   // Set illume to: illume only
+```
+
+**Note:** The illume light only turn on while scanning, the *STROBE* will output FLASH light which sync with image sensor shutter.
 
 ## Config scan result text case switch
 

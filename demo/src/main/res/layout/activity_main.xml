@@ -116,7 +116,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_weight="0.3"
+                android:layout_weight="0.2"
                 android:textAllCaps="false"
                 android:textOff="@string/single_barcode"
                 android:textOn="@string/multi_barcode"/>
@@ -127,10 +127,32 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_weight="0.3"
+                android:layout_weight="0.2"
                 android:textAllCaps="false"
                 android:textOff="@string/normal_scan"
                 android:textOn="@string/precision_1d"/>
+
+            <ToggleButton
+                android:id="@+id/toggle_aim_mode"
+                android:checked="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="0.2"
+                android:textAllCaps="false"
+                android:textOff="@string/aim_always_off"
+                android:textOn="@string/aim_trigger_on"/>
+
+            <ToggleButton
+                android:id="@+id/toggle_flash_mode"
+                android:checked="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="0.2"
+                android:textAllCaps="false"
+                android:textOff="@string/flash_illumonly"
+                android:textOn="@string/flash_illumstrobe"/>
 
         </LinearLayout>
 

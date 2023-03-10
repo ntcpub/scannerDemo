@@ -21,4 +21,8 @@
     <string name="scan">Press down to Scan</string>
     <string name="scanloop">Click to start/stop Scan</string>
     <string name="app_name">XCScanner DemoApp</string>
+    <string name="aim_always_off">Aimer Off</string>
+    <string name="aim_trigger_on">Aimer Trigger On</string>
+    <string name="flash_illumonly">Illume Only</string>
+    <string name="flash_illumstrobe">Strobe</string>
 </resources>

@@ -1,14 +1,16 @@
 **扫码SDK接入文档**
----
+-------------------
 
 # 修改记录
 
-|  **版本号**  |  **日期**  |  **内容**  |
-| --- | --- | --- |
-|  1.0.0  |  2023/02/03  |  实现基本的扫码结果回调以及参数设置  |
-|  1.0.3  |  2023/02/12  |  增加更多的扫码控制及配置接口。  |
-|  1.0.4  |  2023/02/27  |  增加扫码服务的暂停和继续  |
-|  1.0.6  |  2023/03/09  |  支持版本信息、连续扫码、多条码支持及精确扫码相关接口。  |
+
+| **版本号** | **日期**   | **内容**                                               |
+| ---------- | ---------- | ------------------------------------------------------ |
+| 1.0.0      | 2023/02/03 | 实现基本的扫码结果回调以及参数设置                     |
+| 1.0.3      | 2023/02/12 | 增加更多的扫码控制及配置接口。                         |
+| 1.0.4      | 2023/02/27 | 增加扫码服务的暂停和继续                               |
+| 1.0.6      | 2023/03/09 | 支持版本信息、连续扫码、多条码支持及精确扫码相关接口。 |
+| 1.0.7      | 2023/03/10 | 支持瞄准灯和补光灯控制接口。                           |
 
 # 配置Maven仓库
 
@@ -26,6 +28,7 @@
 # 配置依赖
 
 > 配置依赖的SDK，注意使用最新版本
+
 ```
     implementation('com.xcheng:scanner:1.0.6')
 ```
@@ -36,23 +39,23 @@
 
 最简单的情况下SDK初始化后，就可以使用扫码服务。
 
-``` java
+```java
     XcBarcodeScanner.init(Context context, ScannerResult scannerResult)
 ```
 
 > 回调类
 
-``` java
+```java
     public interface ScannerResult {
         void onResult(String result);
     }
-```    
+```
 
 扫码SDK初始化后，就和系统的扫码服务建立了连接，此时扫码结果会通过ScannerResult回调通知回来。
 
 示例代码：
 
-``` java
+```java
                     XcBarcodeScanner.init(this, new ScannerResult() {
                         @Override
                         public void onResult(String result) {
@@ -74,11 +77,11 @@
 
 示例代码：
 
-``` java
+```java
         @Override
         protected void onPause() {
             super.onPause();
-    
+  
             XcBarcodeScanner.deInit(this);
         }
 ```
@@ -87,7 +90,7 @@
 
 可以通过SDK提供的接口控制扫码服务触发扫码动作的开始和结束。
 
-``` java
+```java
     XcBarcodeScanner.startScan();
     XcBarcodeScanner.stopScan();
 ```
@@ -96,7 +99,7 @@
 
 可以通过SDK提供的接口控制扫码服务的暂停和继续。
 
-``` java
+```java
     XcBarcodeScanner.suspendScanService();
     XcBarcodeScanner.resumeScanService();
 ```
@@ -105,7 +108,7 @@
 
 可以通过SDK提供的接口获取扫码服务版本信息。
 
-``` java
+```java
     String serviceVer = XcBarcodeScanner.getServiceVersion();
     Log.d(TAG, "Service ver: " + serviceVer);
 ```
@@ -114,7 +117,7 @@
 
 可以通过SDK提供的接口获取SDK自己的版本信息。
 
-``` java
+```java
     String sdkVer = XcBarcodeScanner.getSdkVersion();
     Log.d(TAG, "SDK ver: " + sdkVer);
 ```
@@ -125,13 +128,13 @@
 
 可以通过SDK提供的接口控制扫码服务开启或关闭制定的条码类型。
 
-``` java
+```java
     XcBarcodeScanner.enableBarcodeType(String barcodeType, boolean enabled);
 ```
 
 所有扫码类型都定义在BarcodeType类中
 
-``` java
+```java
     public class BarcodeType {
         public static final String AZTEC = "Aztec";
         public static final String CODE11 = "Code11";
@@ -170,7 +173,7 @@
 
 示例代码：
 
-``` java
+```java
     XcBarcodeScanner.enableBarcodeType(BarcodeType.QRCODE, true); // 开启QRCode支持
     XcBarcodeScanner.enableBarcodeType(BarcodeType.QRCODE, false); // 关闭QRCode支持
 ```
@@ -179,7 +182,7 @@
 
 所有扫码类型都定义在BarcodeType类中。
 
-``` java
+```java
     boolean isBarcodeTypeEnabled(String type)
 ```
 
@@ -187,13 +190,13 @@
 
 可以通过SDK提供的接口控制扫码服务输出扫码结果的方式。
 
-``` java
+```java
     XcBarcodeScanner.setOutputMethod(String method);
 ```
 
 所有输出方式都定义在OutputMethod类中
 
-``` java
+```java
     public class OutputMethod {
         public static final String NONE = "NONE"; // No putput, application can get barcode data via callback.
         public static final String BROADCAST = "BROADCAST_EVENT"; // Output barcode data via broadcast.
@@ -206,7 +209,7 @@
 
 示例代码：
 
-``` java
+```java
     XcBarcodeScanner.setOutputMethod(OutputMethod.CLIPBOARD);
 ```
 
@@ -214,13 +217,13 @@
 
 可以通过SDK提供的接口设置扫码成功提示。
 
-``` java
+```java
     XcBarcodeScanner.setSuccessNotification(String notification);
 ```
 
 所有提示类型都定义在NotificationType类中
 
-``` java
+```java
     public class NotificationType {
         public static final String MUTE = "Mute";
         public static final String SOUND = "Sound";
@@ -231,7 +234,7 @@
 
 示例代码：
 
-``` java
+```java
     XcBarcodeScanner.setSuccessNotification(NotificationType.SOUND);
 ```
 
@@ -239,13 +242,13 @@
 
 可以通过SDK提供的接口设置扫码成功指示灯功能开关。
 
-``` java
+```java
     XcBarcodeScanner.enableSuccessIndicator(boolean enabled);
 ```
 
 示例代码：
 
-``` java
+```java
     XcBarcodeScanner.enableSuccessIndicator(true); // 开启扫码指示灯功能
     XcBarcodeScanner.enableSuccessIndicator(false); // 关闭扫码指示灯功能
 ```
@@ -254,7 +257,7 @@
 
 可以通过SDK提供的接口设置扫码超时时间。
 
-``` java
+```java
     XcBarcodeScanner.setTimeout(int seconds);
 ```
 
@@ -262,21 +265,76 @@
 
 示例代码：
 
-``` java
+```java
     XcBarcodeScanner.setTimeout(5); // 设置超时时间为5秒
 ```
+
+## 瞄准灯工作模式设置
+
+可以通过SDK提供的接口设置瞄准灯的工作模式。
+
+```java
+    void setAimerLightsMode(int aimMode);
+```
+
+瞄准灯支持的工作模式在AimerMode类中定义：
+
+```java
+public class AimerMode {
+    public static int ALWAYS_OFF; // Always Off.
+    public static int TRIGGER_ON; // TurnOn while scanning.
+    public static int ALWAYS_ON; // Always On.
+}
+```
+
+示例代码：
+
+```java
+    XcBarcodeScanner.setAimerLightsMode(AimerMode.TRIGGER_ON); // 设置瞄准灯工作模式为：扫码时亮起
+    XcBarcodeScanner.setAimerLightsMode(AimerMode.ALWAYS_OFF); // 设置瞄准灯工作模式为：一直关闭
+```
+
+**注意：** 如果激光瞄准灯，请勿使用常亮（ALWAYS_ON）工作模式。
+
+## 补光灯工作模式设置
+
+可以通过SDK提供的接口设置补光灯的工作模式。
+
+```java
+    void setFlashLightsMode(int flashMode);
+```
+
+补光灯支持的工作模式在FlashMode类中定义：
+
+```java
+public class FlashMode {
+    public static int OFF;           // Always off.
+    public static int ILLUME_ONLY;   // Only illume.
+    public static int ILLUME_STROBE; // Illume and Strobe.
+}
+```
+
+示例代码：
+
+```java
+    XcBarcodeScanner.setFlashLightsMode(FlashMode.ILLUME_STROBE); // 设置补光灯工作模式为：补光+闪光
+    XcBarcodeScanner.setFlashLightsMode(FlashMode.ILLUME_ONLY);   // 设置补光灯工作模式为：仅补光
+```
+
+**注意：** 补光灯工作时，仅会在扫码时点亮，闪光（STROBE）模式会在图像传感器曝光的瞬间输出高亮光。
+
 
 ## 扫码结果大小写设置
 
 可以通过SDK提供的接口设置扫码结果的大小写转换选项。
 
-``` java
+```java
     XcBarcodeScanner.setTextCase(String textCase);
 ```
 
 所有转换选项都定义在TextCaseType类中
 
-``` java
+```java
     public class TextCaseType {
         public static final String NONE = "NONE_CASE";
         public static final String UPPER = "UPPER_CASE";
@@ -286,7 +344,7 @@
 
 示例代码：
 
-``` java
+```java
     XcBarcodeScanner.setTextCase(TextCaseType.NONE);  // 设置扫码结果大小写不转换
     XcBarcodeScanner.setTextCase(TextCaseType.UPPER); // 设置扫码结果转换为大写
     XcBarcodeScanner.setTextCase(TextCaseType.LOWER); // 设置扫码结果转换为小写
@@ -296,13 +354,13 @@
 
 可以通过SDK提供的接口为扫码结果添加指定的前缀。
 
-``` java
+```java
     XcBarcodeScanner.setTextPrefix(String prefix);
 ```
 
 示例代码：
 
-``` java
+```java
     XcBarcodeScanner.setTextPrefix("<");  // 设置扫码结果前缀为“<”
     XcBarcodeScanner.setTextPrefix("Empty"); // 设置扫码结果前缀为空
 ```
@@ -311,13 +369,13 @@
 
 可以通过SDK提供的接口为扫码结果添加指定的后缀。
 
-``` java
+```java
     XcBarcodeScanner.setTextSuffix(String prefix);
 ```
 
 示例代码：
 
-``` java
+```java
     XcBarcodeScanner.setTextSuffix(">");  // 设置扫码结果后缀为“>”
     XcBarcodeScanner.setTextSuffix("Empty"); // 设置扫码结果后缀为空
 ```
@@ -326,13 +384,13 @@
 
 可以通过SDK提供的接口设置连续扫码的间隔时间。
 
-``` java
+```java
     setLoopScanInterval(int ms);
 ```
 
 示例代码：
 
-``` java
+```java
     XcBarcodeScanner.setLoopScanInterval(100); // 设置连续扫码间隔时间为100毫秒
 ```
 
@@ -340,7 +398,7 @@
 
 可以通过SDK提供的接口获取当前是否正在进行连续扫码。
 
-``` java
+```java
     boolean isLoopScanRunning();
 ```
 
@@ -348,18 +406,18 @@
 
 可以通过SDK提供的接口触发连续扫码。
 
-``` java
+```java
     startLoopScan();
     stopLoopScan();
 ```
 
 示例代码：
 
-``` java
+```java
     // 开始连续扫码
     XcBarcodeScanner.setLoopScanInterval(100); // 设置连续扫码间隔时间为100毫秒
     XcBarcodeScanner.startLoopScan(); // 开始连续扫码
-    
+  
     // 结束连续扫码
     if (XcBarcodeScanner.isLoopScanRunning()) { // 检查当前是否正在连续扫码
       XcBarcodeScanner.stopLoopScan(); // 停止连续扫码
@@ -370,13 +428,13 @@
 
 可以通过SDK提供的接口，设置多条码扫描参数。
 
-``` java
+```java
     void setMultiBarcodes(int numberOfBarcodes, boolean fixedNumber);
 ```
 
 参数说明：
 
-``` text
+```text
     numberOfBarcodes - 最大单次扫描的条码数量，范围：1~20
     fixedNumber - 是否固定条码数量，true表示固定条码数量，false表示非固定条码数量。
 ```
@@ -385,10 +443,10 @@
 
 示例代码：
 
-``` java
+```java
     // 设置多条码数量为3，且固定条码数量
     XcBarcodeScanner.setMultiBarcodes(3, true);
-    
+  
     // 设置多条码数量为1（每次只尝试解出1个条码）
     XcBarcodeScanner.setMultiBarcodes(1, false);
 ```
@@ -399,13 +457,13 @@
 
 可以通过SDK提供的接口，设置条码识别的范围，典型应用场景为一维码精准扫描。
 
-``` java
+```java
     void setScanRegionSize(int regionSize);
 ```
 
 支持的regionSize定义在RegionSizeType类中：
 
-``` java
+```java
     public class RegionSizeType {
         public static final int VIEWSIZE_100 = 0; // 100% 画幅
         public static final int VIEWSIZE_75 = 1;  // 75% 画幅
@@ -423,10 +481,10 @@
 
 示例代码：
 
-``` java
+```java
     // 设置条码识别精度为一维码精准识别
     XcBarcodeScanner.setScanRegionSize(RegionSizeType.VIEWSIZE_1D);
-    
+  
     // 设置条码识别精度为最低（整个100%画面范围内的条码都识别）
     XcBarcodeScanner.setScanRegionSize(RegionSizeType.VIEWSIZE_100);
 ```

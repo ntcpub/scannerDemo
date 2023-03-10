@@ -16,7 +16,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.xcheng.scanner.AimerMode;
 import com.xcheng.scanner.BarcodeType;
+import com.xcheng.scanner.FlashMode;
 import com.xcheng.scanner.OutputMethod;
 import com.xcheng.scanner.RegionSizeType;
 import com.xcheng.scanner.ScannerResult;
@@ -42,6 +44,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private ToggleButton mToggleMultiBarcodes;
 
     private ToggleButton mTogglePrecisionScan;
+
+    private ToggleButton mToggleAimerMode;
+    private ToggleButton mToggleFlashMode;
     private Spinner mSpinTimeout;
     private Spinner mSpinTextCase;
     private Spinner mSpinOutputMethod;
@@ -234,6 +239,30 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
         });
         mTogglePrecisionScan.setChecked(false);
+
+        // Aimer mode
+        mToggleAimerMode = (ToggleButton)findViewById(R.id.toggle_aim_mode);
+        mToggleAimerMode.setOnCheckedChangeListener((CompoundButton buttonView,
+                                                         boolean isChecked)->{
+            if (isChecked) {
+                XcBarcodeScanner.setAimerLightsMode(AimerMode.TRIGGER_ON);
+            } else {
+                XcBarcodeScanner.setAimerLightsMode(AimerMode.ALWAYS_OFF);
+            }
+        });
+        mToggleAimerMode.setChecked(false);
+
+        // Flash mode
+        mToggleFlashMode = (ToggleButton)findViewById(R.id.toggle_flash_mode);
+        mToggleFlashMode.setOnCheckedChangeListener((CompoundButton buttonView,
+                                                         boolean isChecked)->{
+            if (isChecked) {
+                XcBarcodeScanner.setFlashLightsMode(FlashMode.ILLUME_STROBE);
+            } else {
+                XcBarcodeScanner.setFlashLightsMode(FlashMode.ILLUME_ONLY);
+            }
+        });
+        mToggleFlashMode.setChecked(false);
 
         mButtonScan.setOnTouchListener(new View.OnTouchListener() {
             @Override
