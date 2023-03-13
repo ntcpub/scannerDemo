@@ -3,13 +3,15 @@
 
 # Change log
 
-| **Version** | **Date**   | **Changes**                                                          |
-|-------|------------|----------------------------------------------------------------------|
-| 1.0.0 | 2023/02/03 | Basic scan result callback and settings.                             |
-| 1.0.3 | 2023/02/12 | Add API.                                                             |
-| 1.0.4 | 2023/02/27 | Add suspend and resume API.                                          |
-| 1.0.6 | 2023/03/09 | Add version info, loopscan, multibarcodes and precise scan about API. |
-| 1.0.7 | 2023/03/10 | Add API to support config aimer and illume light work mode.          |
+| **Version** | **Date**   | **Changes**                                                           |
+|-------------|------------|-----------------------------------------------------------------------|
+| 1.0.0       | 2023/02/03 | Basic scan result callback and settings.                              |
+| 1.0.3       | 2023/02/12 | Add API.                                                              |
+| 1.0.4       | 2023/02/27 | Add suspend and resume API.                                           |
+| 1.0.6       | 2023/03/09 | Add version info, loopscan, multibarcodes and precise scan about API. |
+| 1.0.7       | 2023/03/10 | Add API to support config aimer and illume light work mode.           |
+| 1.0.8       | 2023/03/13 | Fixed SDK version in docs.                                            |
+
 
 # Config Maven
 
@@ -29,7 +31,7 @@
 > Config your project build.gradle, as following example:
 
 ```
-    implementation('com.xcheng:scanner:1.0.6')
+    implementation('com.xcheng:scanner:1.0.8')
 ```
 
 It is  recommended to use the latest version of SDK.
