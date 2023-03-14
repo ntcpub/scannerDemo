@@ -4,14 +4,15 @@
 # 修改记录
 
 
-| **版本号** | **日期**   | **内容**                      |
-| ---------- | ---------- |-----------------------------|
-| 1.0.0      | 2023/02/03 | 实现基本的扫码结果回调以及参数设置           |
-| 1.0.3      | 2023/02/12 | 增加更多的扫码控制及配置接口。             |
-| 1.0.4      | 2023/02/27 | 增加扫码服务的暂停和继续                |
-| 1.0.6      | 2023/03/09 | 支持版本信息、连续扫码、多条码支持及精确扫码相关接口。 |
-| 1.0.7      | 2023/03/10 | 支持瞄准灯和补光灯控制接口。              |
-| 1.0.8       | 2023/03/13 | 修订文档中的sdk版本号.               |
+| **版本号** | **日期**   | **内容**                                                                        |
+| ---------- | ---------- |-------------------------------------------------------------------------------|
+| 1.0.0      | 2023/02/03 | 实现基本的扫码结果回调以及参数设置                                                             |
+| 1.0.3      | 2023/02/12 | 增加更多的扫码控制及配置接口。                                                               |
+| 1.0.4      | 2023/02/27 | 增加扫码服务的暂停和继续                                                                  |
+| 1.0.6      | 2023/03/09 | 支持版本信息、连续扫码、多条码支持及精确扫码相关接口。                                                   |
+| 1.0.7      | 2023/03/10 | 支持瞄准灯和补光灯控制接口。                                                                |
+| 1.0.8       | 2023/03/13 | 修订文档中的sdk版本号.                                                                 |
+| 1.0.9       | 2023/03/14 | 增加支持授权激活及授权状态查询的API。|
 
 # 配置Maven仓库
 
@@ -31,7 +32,7 @@
 > 配置依赖的SDK，注意使用最新版本
 
 ```
-    implementation('com.xcheng:scanner:1.0.8')
+    implementation('com.xcheng:scanner:1.0.9')
 ```
 
 # 功能使用
@@ -86,6 +87,40 @@
             XcBarcodeScanner.deInit(this);
         }
 ```
+
+## 查询授权状态
+
+使用如下接口可以查询授权状态：
+
+```java
+    XcBarcodeScanner.getLicenseState();
+```
+
+所有的授权状态定义请参考类： *LicenseState*
+
+```java
+    public class LicenseState {
+        public static final int INACTIVE = 0;   // License not actived.
+        public static final int ACTIVATING = 1; // License is activating.
+        public static final int ACTIVED = 2;    // License already actived.
+        public static final int INVALID = 3;    // License invalid, contact vendor.
+        public static final int NETWORK_ISSUE = 4; // Network issue, connet before active license.
+        public static final int EXPIRED = 5;    // License expired, contact vendor.
+    }
+```
+
+## 激活授权
+
+使用如下接口可以按需要激活授权。
+
+```java
+    XcBarcodeScanner.activateLicense();
+```
+
+在调用激活授权后，需要约1~2分钟时间完成激活流程。
+我们可以通过接口 *getLicenseState* 来查询授权的状态变化。
+
+**Note:** 激活授权需要有良好的网络连接。
 
 ## 开始/结束扫码动作
 

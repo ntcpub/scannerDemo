@@ -2,12 +2,16 @@ package com.xcheng.demo.scanner;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,6 +23,7 @@ import android.widget.ToggleButton;
 import com.xcheng.scanner.AimerMode;
 import com.xcheng.scanner.BarcodeType;
 import com.xcheng.scanner.FlashMode;
+import com.xcheng.scanner.LicenseState;
 import com.xcheng.scanner.OutputMethod;
 import com.xcheng.scanner.RegionSizeType;
 import com.xcheng.scanner.ScannerResult;
@@ -34,6 +39,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private Button mButtonSuspend;
     private Button mButtonResume;
+
+    private Button mButtonActicveLicense;
     private TextView mTextResult;
     private ToggleButton mToggleIndicator;
 
@@ -57,6 +64,20 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private boolean loopScanEnabled;
 
+    private void showAlertDialog(String title,
+                                 String msg,
+                                 boolean cancelAble,
+                                 String positiveButton,
+                                 android.content.DialogInterface.OnClickListener positiveButtonCb) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle(title);
+        alertDialogBuilder.setCancelable(cancelAble);
+        alertDialogBuilder.setMessage(msg);
+        alertDialogBuilder.setPositiveButton(positiveButton, positiveButtonCb);
+        Dialog dialog = alertDialogBuilder.create();
+        //dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+        dialog.show();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +90,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         mButtonSuspend = (Button)findViewById(R.id.button_suspend);
         mButtonResume = (Button)findViewById(R.id.button_resume);
+        mButtonActicveLicense = (Button)findViewById(R.id.button_active_license);
 
         mToggleQrCode = (ToggleButton)findViewById(R.id.toggle_enable_qr);
         mToggleQrCode.setOnCheckedChangeListener((CompoundButton buttonView,
@@ -337,12 +359,52 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        // Get sdk version
                         String sdkVer = XcBarcodeScanner.getSdkVersion(getApplicationContext());
+
+                        // Get service version
                         String serviceVer = XcBarcodeScanner.getServiceVersion();
+
+                        // Get license state
+                        int licState = XcBarcodeScanner.getLicenseState();
+                        String licMsg = "";
+                        switch(licState) {
+                            case LicenseState.INACTIVE:
+                                licMsg = "Need to active license firstly!";
+                                mButtonActicveLicense.setEnabled(true);
+                                break;
+
+                            case LicenseState.ACTIVATING:
+                                licMsg = "License activating...";
+                                mButtonActicveLicense.setEnabled(false);
+                                break;
+
+                            case LicenseState.ACTIVED:
+                                licMsg = "License actived, be happy!";
+                                mButtonActicveLicense.setEnabled(false);
+                                break;
+
+                            case LicenseState.INVALID:
+                                licMsg = "License invalid, check with vendor please!";
+                                mButtonActicveLicense.setEnabled(true);
+                                break;
+
+                            case LicenseState.NETWORK_ISSUE:
+                                licMsg = "Need network to active license!";
+                                mButtonActicveLicense.setEnabled(true);
+                                break;
+
+                            case LicenseState.EXPIRED:
+                                licMsg = "License expired, check with vendor please!";
+                                mButtonActicveLicense.setEnabled(true);
+                                break;
+                        }
+
 
                         allResult =  allResult + "\n" +
                                 "SDK ver: " + sdkVer + "\n" +
-                                "Service ver: " + serviceVer + "\n";
+                                "Service ver: " + serviceVer + "\n" +
+                                licMsg;
                         mTextResult.setText(allResult);
 
                         // Scroll to bottom
@@ -374,6 +436,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
             case R.id.button_resume:
                 Log.d(TAG, "Resume");
                 XcBarcodeScanner.resumeScanService();
+                break;
+
+            case R.id.button_active_license:
+                Log.d(TAG, "Active license");
+                XcBarcodeScanner.activateLicense();
                 break;
         }
     }

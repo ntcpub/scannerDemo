@@ -25,4 +25,5 @@
     <string name="aim_trigger_on">Aimer Trigger On</string>
     <string name="flash_illumonly">Illume Only</string>
     <string name="flash_illumstrobe">Strobe</string>
+    <string name="active_license">Active license</string>
 </resources>

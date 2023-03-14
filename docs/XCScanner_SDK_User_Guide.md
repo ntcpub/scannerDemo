@@ -11,7 +11,7 @@
 | 1.0.6       | 2023/03/09 | Add version info, loopscan, multibarcodes and precise scan about API. |
 | 1.0.7       | 2023/03/10 | Add API to support config aimer and illume light work mode.           |
 | 1.0.8       | 2023/03/13 | Fixed SDK version in docs.                                            |
-
+| 1.0.9       | 2023/03/14 | Add API to support license acive and license state query.             |
 
 # Config Maven
 
@@ -31,7 +31,7 @@
 > Config your project build.gradle, as following example:
 
 ```
-    implementation('com.xcheng:scanner:1.0.8')
+    implementation('com.xcheng:scanner:1.0.9')
 ```
 
 It is  recommended to use the latest version of SDK.
@@ -88,6 +88,40 @@ Sample code:
             XcBarcodeScanner.deInit(this);
         }
 ```
+
+## Query license status
+
+Use the following API to query license status.
+
+```java
+    XcBarcodeScanner.getLicenseState();
+```
+
+All license status defined in the class *LicenseState*:
+
+```java
+    public class LicenseState {
+        public static final int INACTIVE = 0;   // License not actived.
+        public static final int ACTIVATING = 1; // License is activating.
+        public static final int ACTIVED = 2;    // License already actived.
+        public static final int INVALID = 3;    // License invalid, contact vendor.
+        public static final int NETWORK_ISSUE = 4; // Network issue, connet before active license.
+        public static final int EXPIRED = 5;    // License expired, contact vendor.
+    }
+```
+
+## Active license
+
+Use the following API to active license if needed.
+
+```java
+    XcBarcodeScanner.activateLicense();
+```
+
+After active license, it need about 1 or 2 minutes to process.
+We can use the API *getLicenseState* to query license status.
+
+**Note:** Active license need network connection.
 
 ## Start/Stop scanning
 

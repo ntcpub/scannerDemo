@@ -112,47 +112,47 @@
 
             <ToggleButton
                 android:id="@+id/toggle_multibarcodes"
-                android:checked="false"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="0.2"
+                android:checked="false"
                 android:textAllCaps="false"
                 android:textOff="@string/single_barcode"
-                android:textOn="@string/multi_barcode"/>
+                android:textOn="@string/multi_barcode" />
 
             <ToggleButton
                 android:id="@+id/toggle_precision_1d_scan"
-                android:checked="false"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="0.2"
+                android:checked="false"
                 android:textAllCaps="false"
                 android:textOff="@string/normal_scan"
-                android:textOn="@string/precision_1d"/>
+                android:textOn="@string/precision_1d" />
 
             <ToggleButton
                 android:id="@+id/toggle_aim_mode"
-                android:checked="false"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="0.2"
+                android:checked="false"
                 android:textAllCaps="false"
                 android:textOff="@string/aim_always_off"
-                android:textOn="@string/aim_trigger_on"/>
+                android:textOn="@string/aim_trigger_on" />
 
             <ToggleButton
                 android:id="@+id/toggle_flash_mode"
-                android:checked="false"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="0.2"
+                android:checked="false"
                 android:textAllCaps="false"
                 android:textOff="@string/flash_illumonly"
-                android:textOn="@string/flash_illumstrobe"/>
+                android:textOn="@string/flash_illumstrobe" />
 
         </LinearLayout>
 
@@ -202,21 +202,31 @@
             <Button
                 android:id="@+id/button_suspend"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:textAllCaps="false"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
                 android:onClick="onClick"
                 android:text="@string/suspend"
+                android:textAllCaps="false"
                 android:visibility="visible" />
 
             <Button
                 android:id="@+id/button_resume"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:textAllCaps="false"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
                 android:onClick="onClick"
                 android:text="@string/resume"
+                android:textAllCaps="false"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/button_active_license"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
+                android:onClick="onClick"
+                android:text="@string/active_license"
+                android:textAllCaps="false"
                 android:visibility="visible" />
         </LinearLayout>
 
