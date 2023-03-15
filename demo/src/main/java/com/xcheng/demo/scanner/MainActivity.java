@@ -342,6 +342,20 @@ public class MainActivity extends Activity implements View.OnClickListener {
         });
     }
 
+    private void onScanServiceStateChanged() {
+        boolean isServiceSuspending = XcBarcodeScanner.isScanServiceSuspending();
+
+        if (isServiceSuspending) {
+            showAlertDialog("Service state:", "Scan service is suspending, resume it firstly.", false, "OK", null);
+            mButtonScan.setEnabled(false);
+            mButtonSuspend.setEnabled(false);
+            mButtonResume.setEnabled(true);
+        } else {
+            mButtonScan.setEnabled(true);
+            mButtonSuspend.setEnabled(true);
+            mButtonResume.setEnabled(false);
+        }
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -364,6 +378,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
                         // Get service version
                         String serviceVer = XcBarcodeScanner.getServiceVersion();
+
+                        onScanServiceStateChanged();
 
                         // Get license state
                         int licState = XcBarcodeScanner.getLicenseState();
@@ -431,11 +447,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
             case R.id.button_suspend:
                 Log.d(TAG, "Suspend");
                 XcBarcodeScanner.suspendScanService();
+                onScanServiceStateChanged();
                 break;
 
             case R.id.button_resume:
                 Log.d(TAG, "Resume");
                 XcBarcodeScanner.resumeScanService();
+                onScanServiceStateChanged();
                 break;
 
             case R.id.button_active_license:

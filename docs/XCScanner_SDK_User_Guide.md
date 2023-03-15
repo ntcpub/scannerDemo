@@ -12,6 +12,7 @@
 | 1.0.7       | 2023/03/10 | Add API to support config aimer and illume light work mode.           |
 | 1.0.8       | 2023/03/13 | Fixed SDK version in docs.                                            |
 | 1.0.9       | 2023/03/14 | Add API to support license acive and license state query.             |
+| 1.1.0       | 2023/03/15 | Add API to support get scan service status.                           |
 
 # Config Maven
 
@@ -31,7 +32,7 @@
 > Config your project build.gradle, as following example:
 
 ```
-    implementation('com.xcheng:scanner:1.0.9')
+    implementation('com.xcheng:scanner:1.1.0')
 ```
 
 It is  recommended to use the latest version of SDK.
@@ -141,6 +142,14 @@ After suspend, any API to control scan start or stop will be bypassed, and camer
 ```java
     XcBarcodeScanner.suspendScanService();
     XcBarcodeScanner.resumeScanService();
+```
+
+## Get scan service status
+
+Use the following API to check current scan service status.
+
+```java
+    boolean isScanServiceSuspending();
 ```
 
 ## Get version of scan service
