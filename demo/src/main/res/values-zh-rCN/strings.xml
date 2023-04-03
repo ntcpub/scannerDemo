@@ -27,4 +27,5 @@
     <string name="flash_illumonly">仅照明</string>
     <string name="flash_illumstrobe">开闪光</string>
     <string name="active_license">激活授权</string>
+    <string name="get_last_image">取图</string>
 </resources>

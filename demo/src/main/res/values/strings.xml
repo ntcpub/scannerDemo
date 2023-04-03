@@ -26,4 +26,5 @@
     <string name="flash_illumonly">Illume Only</string>
     <string name="flash_illumstrobe">Strobe</string>
     <string name="active_license">Active license</string>
+    <string name="get_last_image">Get LastImage</string>
 </resources>

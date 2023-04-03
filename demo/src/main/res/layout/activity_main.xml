@@ -228,6 +228,16 @@
                 android:text="@string/active_license"
                 android:textAllCaps="false"
                 android:visibility="visible" />
+
+            <Button
+                android:id="@+id/button_get_lastimage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
+                android:onClick="onClick"
+                android:text="@string/get_last_image"
+                android:textAllCaps="false"
+                android:visibility="visible" />
         </LinearLayout>
 
         <Button

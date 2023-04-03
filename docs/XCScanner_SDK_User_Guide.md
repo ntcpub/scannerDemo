@@ -4,15 +4,16 @@
 # Change log
 
 | **Version** | **Date**   | **Changes**                                                           |
-|-------------|------------|-----------------------------------------------------------------------|
-| 1.0.0       | 2023/02/03 | Basic scan result callback and settings.                              |
-| 1.0.3       | 2023/02/12 | Add API.                                                              |
-| 1.0.4       | 2023/02/27 | Add suspend and resume API.                                           |
-| 1.0.6       | 2023/03/09 | Add version info, loopscan, multibarcodes and precise scan about API. |
-| 1.0.7       | 2023/03/10 | Add API to support config aimer and illume light work mode.           |
-| 1.0.8       | 2023/03/13 | Fixed SDK version in docs.                                            |
-| 1.0.9       | 2023/03/14 | Add API to support license acive and license state query.             |
-| 1.1.0       | 2023/03/15 | Add API to support get scan service status.                           |
+|-------|------------|-----------------------------------------------------------------------|
+| 1.0.0 | 2023/02/03 | Basic scan result callback and settings.                              |
+| 1.0.3 | 2023/02/12 | Add API.                                                              |
+| 1.0.4 | 2023/02/27 | Add suspend and resume API.                                           |
+| 1.0.6 | 2023/03/09 | Add version info, loopscan, multibarcodes and precise scan about API. |
+| 1.0.7 | 2023/03/10 | Add API to support config aimer and illume light work mode.           |
+| 1.0.8 | 2023/03/13 | Fixed SDK version in docs.                                            |
+| 1.0.9 | 2023/03/14 | Add API to support license acive and license state query.             |
+| 1.1.0 | 2023/03/15 | Add API to support get scan service status.                           |
+| 1.1.2 | 2023/04/03 | Add API to support get the latest decode image. |
 
 # Config Maven
 
@@ -32,7 +33,7 @@
 > Config your project build.gradle, as following example:
 
 ```
-    implementation('com.xcheng:scanner:1.1.0')
+    implementation('com.xcheng:scanner:1.1.2')
 ```
 
 It is  recommended to use the latest version of SDK.
@@ -536,3 +537,30 @@ Sample code:
 ```
 
 Note: if enabled multibarcodes and numberOfBarcodes more than 1, it is recommend to use 100% region of frame.
+
+## Get the last one decode image
+
+Use the following API to get the last image to decode. 
+
+```java
+    XCImage getLastDecodeImage();
+```
+
+The XCImage is the image class object retured.
+
+Sample code:
+
+```java
+import com.tools.XCImage;
+
+public void getLastImage() {
+    XCImage lastImg=XcBarcodeScanner.getLastDecodeImage();
+    
+    if(lastImg!=null){
+        String infoStr="Witdh: "+lastImg.getWidth()+", Height: "+lastImg.getHeight()+", Stride: "+lastImg.getStride()+", size: "+lastImg.getData().length+" Bytes";
+        showAlertDialog("Image Info:",infoStr,false,"OK",null);
+    }else{
+        showAlertDialog("Image Info:","No image!",false,"OK",null);
+    }
+}
+```

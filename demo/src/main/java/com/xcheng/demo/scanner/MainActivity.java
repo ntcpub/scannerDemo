@@ -20,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.tools.XCImage;
 import com.xcheng.scanner.AimerMode;
 import com.xcheng.scanner.BarcodeType;
 import com.xcheng.scanner.FlashMode;
@@ -336,7 +337,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         if(offset > mTextResult.getHeight()){
                             mTextResult.scrollTo(0,offset - mTextResult.getHeight());
                         }
+
                     }
+
                 });
             }
         });
@@ -459,6 +462,16 @@ public class MainActivity extends Activity implements View.OnClickListener {
             case R.id.button_active_license:
                 Log.d(TAG, "Active license");
                 XcBarcodeScanner.activateLicense();
+                break;
+
+            case R.id.button_get_lastimage:
+                XCImage lastImg = XcBarcodeScanner.getLastDecodeImage();
+                if (lastImg != null) {
+                    String infoStr = "Witdh: " + lastImg.getWidth() + ", Height: " + lastImg.getHeight() + ", Stride: " + lastImg.getStride() + ", size: " + lastImg.getData().length + " Bytes";
+                    showAlertDialog("Image Info:", infoStr, false, "OK", null);
+                } else {
+                    showAlertDialog("Image Info:", "No image!", false, "OK", null);
+                }
                 break;
         }
     }
