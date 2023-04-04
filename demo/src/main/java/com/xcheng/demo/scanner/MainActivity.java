@@ -4,8 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -31,6 +33,11 @@ import com.xcheng.scanner.ScannerResult;
 import com.xcheng.scanner.TextCaseType;
 import com.xcheng.scanner.XcBarcodeScanner;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,6 +47,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private Button mButtonSuspend;
     private Button mButtonResume;
+
+    private PictureDialog myPictureDialog;
 
     private Button mButtonActicveLicense;
     private TextView mTextResult;
@@ -444,6 +453,42 @@ public class MainActivity extends Activity implements View.OnClickListener {
         XcBarcodeScanner.deInit(this);
     }
 
+    private static int cnt = 0;
+
+    /**
+     * 8位灰度转Bitmap
+     *
+     * 图像宽度必须能被4整除
+     *
+     * @param data
+     *            裸数据
+     * @param width
+     *            图像宽度
+     * @param height
+     *            图像高度
+     * @return
+     */
+    public Bitmap raw8ToBitmap(byte[] data, int width, int height)
+    {
+        byte[] Bits = new byte[data.length * 4]; //RGBA 数组
+
+        int i;
+        for (i = 0; i < data.length; i++)
+        {
+            // 原理：4个字节表示一个灰度，则RGB  = 灰度值，最后一个Alpha = 0xff;
+            Bits[i * 4 + 0] = data[i]; // R
+            Bits[i * 4 + 1] = data[i]; // G
+            Bits[i * 4 + 2] = data[i]; // B
+            Bits[i * 4 + 3] = -1;  // 0xFF, A
+        }
+
+        // Bitmap.Config.ARGB_8888 表示：图像模式为8位
+        Bitmap bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        bmp.copyPixelsFromBuffer(ByteBuffer.wrap(Bits));
+
+        return bmp;
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -465,12 +510,45 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
 
             case R.id.button_get_lastimage:
+                String imageStorageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + File.separator + "demoImgSave";
+                File storageDir = new File(imageStorageDir + File.separator);
+                if (!storageDir.exists()) {
+                    Log.d(TAG, "Dir not exist, create" + storageDir);
+                    storageDir.mkdirs();
+                }
+
                 XCImage lastImg = XcBarcodeScanner.getLastDecodeImage();
                 if (lastImg != null) {
-                    String infoStr = "Witdh: " + lastImg.getWidth() + ", Height: " + lastImg.getHeight() + ", Stride: " + lastImg.getStride() + ", size: " + lastImg.getData().length + " Bytes";
-                    showAlertDialog("Image Info:", infoStr, false, "OK", null);
+                    int width = lastImg.getWidth();
+                    int height = lastImg.getHeight();
+                    int stride = lastImg.getStride();
+                    byte[] data = lastImg.getData();
+                    Bitmap bmp = raw8ToBitmap(data, width, height);
+                    String imgFilePath = imageStorageDir + File.separator + "lastImage_w" + width + "_h"+height + "_s" + stride + "_" + cnt + ".png";
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    bmp.compress(Bitmap.CompressFormat.PNG, 100, bos);
+                    byte[] bmpData = bos.toByteArray();
+
+                    try {
+                        FileOutputStream imgFo = new FileOutputStream(imgFilePath);
+                        //imgFo.write(data); // write raw data to file
+                        imgFo.write(bmpData);
+                        imgFo.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    String infoStr = "W=" + lastImg.getWidth() + ", " +
+                                     "H=" + lastImg.getHeight() + ", " +
+                                     "Size=" + lastImg.getData().length + " Bytes";
+                    infoStr += "\n" + "Image path: " + imgFilePath;
+                    //myPictureDialog = new PictureDialog(this, "Image Info:", infoStr, imgFilePath);
+                    myPictureDialog = new PictureDialog(this, "Image Info:", infoStr, bmp);
+                    myPictureDialog.show();
+
+                    cnt++;
                 } else {
-                    showAlertDialog("Image Info:", "No image!", false, "OK", null);
+                    showAlertDialog("", "No image!", false, "OK", null);
                 }
                 break;
         }
