@@ -44,5 +44,5 @@ android {
 }
 
 dependencies {
-    implementation('com.xcheng:scanner:1.1.2')
+    implementation('com.xcheng:scanner:1.1.3')
 }

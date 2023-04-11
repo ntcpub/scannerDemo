@@ -1,19 +1,21 @@
 **XCScanner SDK User Guide**
----
+----------------------------
 
 # Change log
 
+
 | **Version** | **Date**   | **Changes**                                                           |
-|-------|------------|-----------------------------------------------------------------------|
-| 1.0.0 | 2023/02/03 | Basic scan result callback and settings.                              |
-| 1.0.3 | 2023/02/12 | Add API.                                                              |
-| 1.0.4 | 2023/02/27 | Add suspend and resume API.                                           |
-| 1.0.6 | 2023/03/09 | Add version info, loopscan, multibarcodes and precise scan about API. |
-| 1.0.7 | 2023/03/10 | Add API to support config aimer and illume light work mode.           |
-| 1.0.8 | 2023/03/13 | Fixed SDK version in docs.                                            |
-| 1.0.9 | 2023/03/14 | Add API to support license acive and license state query.             |
-| 1.1.0 | 2023/03/15 | Add API to support get scan service status.                           |
-| 1.1.2 | 2023/04/03 | Add API to support get the latest decode image. |
+| ----------- | ---------- | --------------------------------------------------------------------- |
+| 1.0.0       | 2023/02/03 | Basic scan result callback and settings.                              |
+| 1.0.3       | 2023/02/12 | Add API.                                                              |
+| 1.0.4       | 2023/02/27 | Add suspend and resume API.                                           |
+| 1.0.6       | 2023/03/09 | Add version info, loopscan, multibarcodes and precise scan about API. |
+| 1.0.7       | 2023/03/10 | Add API to support config aimer and illume light work mode.           |
+| 1.0.8       | 2023/03/13 | Fixed SDK version in docs.                                            |
+| 1.0.9       | 2023/03/14 | Add API to support license acive and license state query.             |
+| 1.1.0       | 2023/03/15 | Add API to support get scan service status.                           |
+| 1.1.2       | 2023/04/03 | Add API to support get the latest decode image.                       |
+| 1.1.3       | 2023/04/11 | Add API to support set suffix2 and prefix2.                           |
 
 # Config Maven
 
@@ -33,7 +35,7 @@
 > Config your project build.gradle, as following example:
 
 ```
-    implementation('com.xcheng:scanner:1.1.2')
+    implementation('com.xcheng:scanner:1.1.3')
 ```
 
 It is  recommended to use the latest version of SDK.
@@ -44,13 +46,13 @@ It is  recommended to use the latest version of SDK.
 
 After init SDK, you can use scan function provided by scan service via APIs.
 
-``` java
+```java
     XcBarcodeScanner.init(Context context, ScannerResult scannerResult)
 ```
 
 > Callback interface
 
-``` java
+```java
     public interface ScannerResult {
         void onResult(String result);
     }
@@ -60,7 +62,7 @@ After init SDK, your application will connect with scan service, and the scan re
 
 Sample code:
 
-``` java
+```java
                     XcBarcodeScanner.init(this, new ScannerResult() {
                         @Override
                         public void onResult(String result) {
@@ -86,7 +88,7 @@ Sample code:
         @Override
         protected void onPause() {
             super.onPause();
-    
+  
             XcBarcodeScanner.deInit(this);
         }
 ```
@@ -318,7 +320,6 @@ Sample code:
     XcBarcodeScanner.setTimeout(5); // Set scan time limit to 5 seconds.
 ```
 
-
 ## Config aimer light
 
 Use the following API to config aimer light work mode.
@@ -405,12 +406,14 @@ Use the following API to config prefix of barcode result.
 
 ```java
     XcBarcodeScanner.setTextPrefix(String prefix);
+    XcBarcodeScanner.setTextPrefix2(String prefix2);
 ```
 
 Sample code:
 
 ```java
     XcBarcodeScanner.setTextPrefix("<");  // Config prefix as "<"
+    XcBarcodeScanner.setTextPrefix2(":");  // Config prefix2 as ":"
     XcBarcodeScanner.setTextPrefix("Empty"); // Config prefix None.
 ```
 
@@ -420,16 +423,18 @@ Use the following API to config suffix of barcode result.
 
 ```java
     XcBarcodeScanner.setTextSuffix(String suffix);
+    XcBarcodeScanner.setTextSuffix2(String suffix2);
 ```
 
 Sample code:
 
 ```java
     XcBarcodeScanner.setTextSuffix(">");  // Config suffix as ">"
+    XcBarcodeScanner.setTextSuffix2(":");  // Config suffix2 as ":"
     XcBarcodeScanner.setTextSuffix("Empty"); // Config suffix None.
 ```
 
-## Config interval of loopscan 
+## Config interval of loopscan
 
 Use the following API to config interval of loopscan.
 
@@ -466,7 +471,7 @@ Sample code:
     // Start loopscan.
     XcBarcodeScanner.setLoopScanInterval(100); // Set loopscan interval to 100 ms
     XcBarcodeScanner.startLoopScan(); // start loopscan.
-    
+  
     // Stop loopscan
     if (XcBarcodeScanner.isLoopScanRunning()) { // Check if loopscan is running.
       XcBarcodeScanner.stopLoopScan(); // stop loopscan.
@@ -495,7 +500,7 @@ Sample code:
 ```java
     // Config numberOfBarcodes to 3, and be fixedNumber.
     XcBarcodeScanner.setMultiBarcodes(3, true);
-    
+  
     // Config numberOfBarcodes to 1
     XcBarcodeScanner.setMultiBarcodes(1, false);
 ```
@@ -531,7 +536,7 @@ Sample code:
 ```java
     // Config scan region to 1D barcode region.
     XcBarcodeScanner.setScanRegionSize(RegionSizeType.VIEWSIZE_1D);
-    
+  
     // Config barcode scan region to max region. (All 100% of framne)
     XcBarcodeScanner.setScanRegionSize(RegionSizeType.VIEWSIZE_100);
 ```
@@ -540,7 +545,7 @@ Note: if enabled multibarcodes and numberOfBarcodes more than 1, it is recommend
 
 ## Get the last one decode image
 
-Use the following API to get the last image to decode. 
+Use the following API to get the last image to decode.
 
 ```java
     XCImage getLastDecodeImage();
@@ -555,7 +560,7 @@ import com.tools.XCImage;
 
 public void getLastImage() {
     XCImage lastImg=XcBarcodeScanner.getLastDecodeImage();
-    
+  
     if(lastImg!=null){
         String infoStr="Witdh: "+lastImg.getWidth()+", Height: "+lastImg.getHeight()+", Stride: "+lastImg.getStride()+", size: "+lastImg.getData().length+" Bytes";
         showAlertDialog("Image Info:",infoStr,false,"OK",null);
